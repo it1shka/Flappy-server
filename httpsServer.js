@@ -3,4 +3,4 @@ let app = express();
 app.get('/', (req, res) => {
     res.send('Hello world!');
 });
-app.listen(5000, () => console.log('Listening on 3000...'));
+app.listen(8080 || process.env.PORT, () => console.log('Listening on 3000...'));
