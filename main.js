@@ -29,6 +29,7 @@ http.createServer((req, res) => {
             console.log(`Got a message: ${body}`);
             let toSave = new doc(body);
             db.insert(toSave);
+            //res.writeHead(200, {'Content-Type': 'text/plain'});
             res.end();
         });
     }
@@ -44,8 +45,9 @@ http.createServer((req, res) => {
                 }).slice(0, 201)
             );
             console.log(`Sending a message: ${toSend}`);
+            //res.writeHead(200, {'Content-Type': 'text/plain'});
             res.end(toSend);
         });
 
     }
-}).listen(5000);
+}).listen(process.env.PORT ||  5000, "127.0.0.1", () => {});
