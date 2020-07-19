@@ -1,23 +1,25 @@
-//https://finalflappyserver.oa.r.appspot.com/
+// https://finalflappyserver.oa.r.appspot.com 
 
-const express = require('express'),
-    app = express();
+const express = require('express');
+const app = express();
 
 app.use(express.urlencoded());
 
-const {Datastore} = require('@google-cloud/datastore'),
-    datastore = new Datastore();
+const {Datastore} = require('@google-cloud/datastore');
+const  datastore = new Datastore();
+
+const highscore_key = 'highscore_1';
 
 const insertHighscore = (highscore) => {
     return datastore.save({
-        key: datastore.key('highscore'),
+        key: datastore.key(highscore_key),
         data: highscore
     });
 };
 
 const getHighscores = () => {
     let query = datastore
-        .createQuery('highscore')
+        .createQuery(highscore_key)
         .order('score', {descending: true})
         .limit(200);
 
@@ -27,17 +29,18 @@ const getHighscores = () => {
 app.get('/', async (req, res, next) => {
     try{
         let [highscores] = await getHighscores();
-        res.send(JSON.stringify(highscores));
+        res.send(highscores);
     }catch(error){
         next(error);
     }
 });
 
+
 app.post('/', async (req, res, next) => {
     try{
-        let highscore = Object.keys(req.body)[0];
+        let highscore = JSON.parse(Object.keys(req.body)[0]);
         await insertHighscore(highscore);
-        res.send('Successfully inserted!');
+        res.send('OK');
     }catch(error){
         next(error);
     }
