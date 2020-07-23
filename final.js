@@ -1,5 +1,3 @@
-// https://finalflappyserver.oa.r.appspot.com 
-
 const express = require('express');
 const app = express();
 
@@ -8,7 +6,7 @@ app.use(express.urlencoded());
 const {Datastore} = require('@google-cloud/datastore');
 const  datastore = new Datastore();
 
-const highscore_key = 'highscore_1';
+const highscore_key = 'highscore_2';
 
 const insertHighscore = (highscore) => {
     return datastore.save({
@@ -35,6 +33,11 @@ app.get('/', async (req, res, next) => {
     }
 });
 
+//get id 
+app.get('/id', (req, res) => {
+    res.send(`${Date.now()}`);
+});
+//
 
 app.post('/', async (req, res, next) => {
     try{
